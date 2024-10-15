@@ -1,0 +1,12 @@
+{# templates/entrepot/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Créer un nouvel entrepôt</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Créer</button>
+    {{ form_end(form) }}
+{% endblock %}
