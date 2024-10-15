@@ -20,7 +20,7 @@ class Entrepot
     private ?int $entrepotNbCasier = null;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $status = false;
 
     public function getId(): ?int
     {

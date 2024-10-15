@@ -14,7 +14,7 @@ class Compartiment
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $status = false;
 
     #[ORM\Column(nullable: true)]
     private ?int $contenu = null;
