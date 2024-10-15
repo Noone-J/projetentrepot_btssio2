@@ -17,7 +17,7 @@ class Entrepot
     private ?string $nom = null;
 
     #[ORM\Column]
-    private ?int $entrepotNbCasier = null;
+    private ?int $entrepotNbCasier = 0;
 
     #[ORM\Column]
     private ?bool $status = false;

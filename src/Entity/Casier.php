@@ -13,11 +13,38 @@ class Casier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?bool $status = null;
+    
+
 
     #[ORM\Column]
-    private ?int $taille = null;
+    private ?bool $status = false;
+
+    #[ORM\ManyToOne(targetEntity: Entrepot::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entrepot $entrepot = null;
+
+    #[ORM\Column]
+    private ?int $nombreCasiers = 0;
+    
+    #[ORM\Column]
+    private ?int $nombreCases = 9;
+
+public function getNombreCasiers(): ?int
+{
+    return $this->nombreCasiers;
+}
+
+public function getNombreCases(): ?int
+{
+    return $this->nombreCases;
+}
+
+public function setNombreCasiers(int $nombreCasiers): static
+{
+    $this->nombreCasiers = $nombreCasiers;
+
+    return $this;
+}
 
     public function getId(): ?int
     {
@@ -36,15 +63,16 @@ class Casier
         return $this;
     }
 
-    public function getTaille(): ?int
+    public function getEntrepot(): ?Entrepot
     {
-        return $this->taille;
+        return $this->entrepot;
     }
 
-    public function setTaille(int $taille): static
+    public function setEntrepot(?Entrepot $entrepot): static
     {
-        $this->taille = $taille;
+        $this->entrepot = $entrepot;
 
         return $this;
     }
 }
+
