@@ -19,6 +19,12 @@ class Compartiment
     #[ORM\Column(nullable: true)]
     private ?int $contenu = null;
 
+    #[ORM\ManyToOne(inversedBy: 'lesCompartiments')]
+    private ?Casier $leCasier = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lesCompartiments')]
+    private ?Colis $leColis = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +50,30 @@ class Compartiment
     public function setContenu(?int $contenu): static
     {
         $this->contenu = $contenu;
+
+        return $this;
+    }
+
+    public function getLeCasier(): ?Casier
+    {
+        return $this->leCasier;
+    }
+
+    public function setLeCasier(?Casier $leCasier): static
+    {
+        $this->leCasier = $leCasier;
+
+        return $this;
+    }
+
+    public function getLeColis(): ?Colis
+    {
+        return $this->leColis;
+    }
+
+    public function setLeColis(?Colis $leColis): static
+    {
+        $this->leColis = $leColis;
 
         return $this;
     }
