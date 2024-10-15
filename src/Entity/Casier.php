@@ -16,7 +16,7 @@ class Casier
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $status = false;
 
     #[ORM\Column]
     private ?int $taille = null;
