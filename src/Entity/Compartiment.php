@@ -77,4 +77,16 @@ class Compartiment
 
         return $this;
     }
+
+    public function verifStatusCompartiment():bool
+    {
+         if ($this->status !== false)
+         {
+            return true;
+         }
+         else{
+            return false;
+         }
+    }
+        
 }

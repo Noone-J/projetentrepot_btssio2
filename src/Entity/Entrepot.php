@@ -142,4 +142,21 @@ class Entrepot
 
         return $this;
     }
+
+    public function verifStatusEntrepot():bool
+    {
+        $nbCasierTrue = 0;
+        foreach($this->lesCasiers as $casier){
+            if ($casier === true)
+            {
+                $nbCasierTrue+=1;
+            }
+        }
+        if($nbCasierTrue === $this->entrepotNbCasier){
+                return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

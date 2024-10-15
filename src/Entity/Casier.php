@@ -105,4 +105,21 @@ class Casier
 
         return $this;
     }
+
+    public function verifStatusCasier():bool
+    {
+        $nbCompartimentTrue = 0;
+        foreach($this->lesCompartiments as $compartiment){
+            if ($compartiment === true)
+            {
+                $nbCompartimentTrue+=1;
+            }
+        }
+        if($nbCompartimentTrue === 9){
+                return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
