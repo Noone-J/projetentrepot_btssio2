@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une nouvelle distance{% endblock %}
+
+{% block body %}
+    <h1>Créer une nouvelle distance</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn">Créer</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('distance_list') }}">Retour à la liste</a>
+{% endblock %}
