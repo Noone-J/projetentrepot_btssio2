@@ -171,4 +171,14 @@ class Casier
         }
         return $affichage;
     }
+
+    public function getNbCasiers() : ?int
+    {
+        $total = 0;
+        foreach ($this->getEntrepotNbCasier() as $nbCasiers)
+        {
+            $total ++;
+        }
+        return $total;
+    }
 }
