@@ -14,7 +14,8 @@ class Casier
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
+    private $compartiments;
+    private $colis;
     #[ORM\Column]
     private ?bool $status = false;
 
@@ -33,6 +34,9 @@ class Casier
     public function __construct()
     {
         $this->lesCompartiments = new ArrayCollection();
+        $this->compartiments = range(0, 8);
+        $this->colis = [];
+
     }
 
     public function getId(): ?int
@@ -121,5 +125,50 @@ class Casier
         else{
             return false;
         }
+    }
+
+    public function modifierStatusCasier(): void
+    {
+        if($this->verifStatusCasier()===true)
+        {
+            $this->status=true;
+        }
+    }
+
+
+    public function ajouterColis($taille) {
+        $compteur = 0;
+        foreach ($this->compartiments as $i => $compartiment) {
+            if ($compteur < count($this->colis)) {
+                continue;
+            }
+            
+            if ($taille == 1 && !in_array($compartiment, $this->colis)) {
+                $this->colis[] = $compartiment;
+                $compteur++;
+            } elseif ($taille == 2 && $compteur < count($this->colis) + 1 && !in_array($compartiment, $this->colis)) {
+                $this->colis[] = $compartiment;
+                $compteur++;
+            } elseif ($taille == 3 && $compteur < count($this->colis) + 2 && !in_array($compartiment, $this->colis)) {
+                $this->colis[] = $compartiment;
+                $compteur++;
+            }
+        }
+    }
+
+    public function afficherCasier() {
+        $affichage = '';
+        foreach ($this->compartiments as $i => $compartiment) {
+            if (!in_array($compartiment, $this->colis)) {
+                $affichage .= '- ';
+            } else {
+                $affichage .= $compartiment . ' ';
+            }
+            
+            if (($i + 1) % 3 === 0) {
+                $affichage .= "\n";
+            }
+        }
+        return $affichage;
     }
 }

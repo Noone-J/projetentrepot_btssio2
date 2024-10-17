@@ -159,4 +159,12 @@ class Entrepot
             return false;
         }
     }
+
+    public function modifierStatusEntrepot(): void
+    {
+        if($this->verifStatusEntrepot()===true)
+        {
+            $this->status=true;
+        }
+    }
 }
