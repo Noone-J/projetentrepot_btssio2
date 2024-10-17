@@ -14,10 +14,16 @@ class Compartiment
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?bool $status = null;
+    private ?bool $status = false;
 
     #[ORM\Column(nullable: true)]
     private ?int $contenu = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lesCompartiments')]
+    private ?Casier $leCasier = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lesCompartiments')]
+    private ?Colis $leColis = null;
 
     public function getId(): ?int
     {
@@ -47,4 +53,40 @@ class Compartiment
 
         return $this;
     }
+
+    public function getLeCasier(): ?Casier
+    {
+        return $this->leCasier;
+    }
+
+    public function setLeCasier(?Casier $leCasier): static
+    {
+        $this->leCasier = $leCasier;
+
+        return $this;
+    }
+
+    public function getLeColis(): ?Colis
+    {
+        return $this->leColis;
+    }
+
+    public function setLeColis(?Colis $leColis): static
+    {
+        $this->leColis = $leColis;
+
+        return $this;
+    }
+
+    public function verifStatusCompartiment():bool
+    {
+         if ($this->status !== false)
+         {
+            return true;
+         }
+         else{
+            return false;
+         }
+    }
+        
 }

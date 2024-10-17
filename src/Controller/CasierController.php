@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Casier;
+use App\Entity\Compartiment;
 use App\Form\CreationCasierType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CasierController extends AbstractController
 {
     #[Route('/casier/new', name: 'casier_new')]
-public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
 {
     $casier = new Casier();
     $form = $this->createForm(CreationCasierType::class, $casier);
@@ -26,7 +27,15 @@ public function create(Request $request, EntityManagerInterface $entityManager):
         for ($i = 0; $i < $nombreCasiers; $i++) {
             $newCasier = new Casier();
             $newCasier->setEntrepot($entrepot); // Associer l'entrepôt
-            // Vous pouvez ajouter d'autres propriétés si nécessaire
+            $newCasier->setStatus(true); // Set other attributes as needed
+            
+            // Crée 9 compartiments pour chaque casier
+            for ($j = 0; $j < 9; $j++) {
+                $compartiment = new Compartiment();
+                $compartiment->setStatus(false); // Status par défaut
+                $newCasier->addCompartiment($compartiment);
+            }
+
             $entityManager->persist($newCasier);
         }
 
@@ -39,6 +48,8 @@ public function create(Request $request, EntityManagerInterface $entityManager):
         'form' => $form->createView(),
     ]);
 }
+
+    
 
 
     #[Route('/casiers', name: 'casier_list')]
