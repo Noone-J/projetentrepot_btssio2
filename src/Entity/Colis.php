@@ -1,10 +1,8 @@
 <?php
-
+// src/Entity/Colis.php
 namespace App\Entity;
 
 use App\Repository\ColisRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ColisRepository::class)]
@@ -15,93 +13,52 @@ class Colis
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
     #[ORM\Column]
-    private ?int $taille = null;
+    private ?string $taille = null; // Changer de int à string
 
     #[ORM\Column(length: 255)]
-    private ?string $reference = null;
-
-    #[ORM\ManyToOne(inversedBy: 'lesColis')]
-    private ?Ville $laVille = null;
-
-    /**
-     * @var Collection<int, Compartiment>
-     */
-    #[ORM\OneToMany(targetEntity: Compartiment::class, mappedBy: 'leColis')]
-    private Collection $lesCompartiments;
-
-    public function __construct()
-    {
-        $this->lesCompartiments = new ArrayCollection();
-    }
+    private ?string $ville = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTaille(): ?int
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getTaille(): ?string // Changer de int à string
     {
         return $this->taille;
     }
 
-    public function setTaille(int $taille): static
+    public function setTaille(string $taille): static // Changer de int à string
     {
         $this->taille = $taille;
 
         return $this;
     }
 
-    public function getReference(): ?string
+    public function getVille(): ?string
     {
-        return $this->reference;
+        return $this->ville;
     }
 
-    public function setReference(string $reference): static
+    public function setVille(string $ville): static
     {
-        $this->reference = $reference;
-
-        return $this;
-    }
-
-    public function getLaVille(): ?Ville
-    {
-        return $this->laVille;
-    }
-
-    public function setLaVille(?Ville $laVille): static
-    {
-        $this->laVille = $laVille;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Compartiment>
-     */
-    public function getLesCompartiments(): Collection
-    {
-        return $this->lesCompartiments;
-    }
-
-    public function addLesCompartiment(Compartiment $lesCompartiment): static
-    {
-        if (!$this->lesCompartiments->contains($lesCompartiment)) {
-            $this->lesCompartiments->add($lesCompartiment);
-            $lesCompartiment->setLeColis($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLesCompartiment(Compartiment $lesCompartiment): static
-    {
-        if ($this->lesCompartiments->removeElement($lesCompartiment)) {
-            // set the owning side to null (unless already changed)
-            if ($lesCompartiment->getLeColis() === $this) {
-                $lesCompartiment->setLeColis(null);
-            }
-        }
+        $this->ville = $ville;
 
         return $this;
     }

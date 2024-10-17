@@ -1,10 +1,9 @@
 <?php
 
+// src/Entity/Ville.php
 namespace App\Entity;
 
 use App\Repository\VilleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VilleRepository::class)]
@@ -12,103 +11,43 @@ class Ville
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $nom = null;
 
-    /**
-     * @var Collection<int, Distance>
-     */
-    #[ORM\OneToMany(targetEntity: Distance::class, mappedBy: 'laVille')]
-    private Collection $lesDistances;
+    #[ORM\Column(type: 'integer')]
+    private ?int $codePostal = null;
 
-    /**
-     * @var Collection<int, Colis>
-     */
-    #[ORM\OneToMany(targetEntity: Colis::class, mappedBy: 'laVille')]
-    private Collection $lesColis;
-
-    public function __construct()
-    {
-        $this->lesDistances = new ArrayCollection();
-        $this->lesColis = new ArrayCollection();
-    }
-
+    // Getter et Setter pour l'ID
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    // Getter et Setter pour le nom
     public function getNom(): ?string
     {
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Distance>
-     */
-    public function getLesDistances(): Collection
+    // Getter et Setter pour le code postal
+    public function getCodePostal(): ?int
     {
-        return $this->lesDistances;
+        return $this->codePostal;
     }
 
-    public function addLesDistance(Distance $lesDistance): static
+    public function setCodePostal(int $codePostal): self
     {
-        if (!$this->lesDistances->contains($lesDistance)) {
-            $this->lesDistances->add($lesDistance);
-            $lesDistance->setLaVille($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLesDistance(Distance $lesDistance): static
-    {
-        if ($this->lesDistances->removeElement($lesDistance)) {
-            // set the owning side to null (unless already changed)
-            if ($lesDistance->getLaVille() === $this) {
-                $lesDistance->setLaVille(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Colis>
-     */
-    public function getLesColis(): Collection
-    {
-        return $this->lesColis;
-    }
-
-    public function addLesColi(Colis $lesColi): static
-    {
-        if (!$this->lesColis->contains($lesColi)) {
-            $this->lesColis->add($lesColi);
-            $lesColi->setLaVille($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLesColi(Colis $lesColi): static
-    {
-        if ($this->lesColis->removeElement($lesColi)) {
-            // set the owning side to null (unless already changed)
-            if ($lesColi->getLaVille() === $this) {
-                $lesColi->setLaVille(null);
-            }
-        }
+        $this->codePostal = $codePostal;
 
         return $this;
     }

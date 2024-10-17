@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\DistanceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Ville; // N'oublie pas d'importer l'entité Ville
+use App\Entity\Entrepot; // N'oublie pas d'importer l'entité Entrepot
 
 #[ORM\Entity(repositoryClass: DistanceRepository::class)]
 class Distance
@@ -16,11 +18,13 @@ class Distance
     #[ORM\Column]
     private ?int $kilometres = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lesDistances')]
-    private ?Entrepot $lEntrepot = null;
+    #[ORM\ManyToOne(targetEntity: Ville::class)]
+    #[ORM\JoinColumn(nullable: false)] // La ville ne peut pas être nulle
+    private ?Ville $ville = null; // Ajout de la relation avec Ville
 
-    #[ORM\ManyToOne(inversedBy: 'lesDistances')]
-    private ?Ville $laVille = null;
+    #[ORM\ManyToOne(targetEntity: Entrepot::class)]
+    #[ORM\JoinColumn(nullable: false)] // L'entrepôt ne peut pas être nul
+    private ?Entrepot $entrepot = null; // Ajout de la relation avec Entrepot
 
     public function getId(): ?int
     {
@@ -39,26 +43,26 @@ class Distance
         return $this;
     }
 
-    public function getLEntrepot(): ?Entrepot
+    public function getVille(): ?Ville // Méthode pour récupérer la ville
     {
-        return $this->lEntrepot;
+        return $this->ville;
     }
 
-    public function setLEntrepot(?Entrepot $lEntrepot): static
+    public function setVille(?Ville $ville): static // Méthode pour définir la ville
     {
-        $this->lEntrepot = $lEntrepot;
+        $this->ville = $ville;
 
         return $this;
     }
 
-    public function getLaVille(): ?Ville
+    public function getEntrepot(): ?Entrepot // Méthode pour récupérer l'entrepôt
     {
-        return $this->laVille;
+        return $this->entrepot;
     }
 
-    public function setLaVille(?Ville $laVille): static
+    public function setEntrepot(?Entrepot $entrepot): static // Méthode pour définir l'entrepôt
     {
-        $this->laVille = $laVille;
+        $this->entrepot = $entrepot;
 
         return $this;
     }

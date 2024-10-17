@@ -1,0 +1,15 @@
+{# templates/entrepot/list.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des entrepôts</h1>
+
+    <ul>
+    {% for entrepot in entrepots %}
+        <li>{{ entrepot.nom }} ({{ entrepot.entrepotNbCasier }} casiers)</li>
+    {% else %}
+        <li>Aucun entrepôt trouvé.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
