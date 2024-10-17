@@ -24,6 +24,7 @@ public function buildForm(FormBuilderInterface $builder, array $options): void
         ])
         ->add('nbCasiers', IntegerType::class, [
             'label' => 'Nombre de Casiers',
+            'mapped' => false,
             'required' => true,
         ]);
 }

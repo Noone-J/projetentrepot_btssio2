@@ -21,8 +21,8 @@ class DistanceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Assigner les relations
-            $distance->setVille($form->get('ville')->getData());
-            $distance->setEntrepot($form->get('entrepot')->getData());
+            $distance->setLaVille($form->get('laville')->getData());
+            $distance->setLEntrepot($form->get('lentrepot')->getData());
 
             // Enregistre la distance
             $entityManager->persist($distance);

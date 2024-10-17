@@ -16,12 +16,12 @@ class DefinitionDistanceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('ville', EntityType::class, [
+            ->add('laville', EntityType::class, [
                 'class' => Ville::class, // On sélectionne les villes disponibles
                 'choice_label' => 'nom', // Nom de la ville affiché dans le formulaire
                 'label' => 'Ville',
             ])
-            ->add('entrepot', EntityType::class, [
+            ->add('lentrepot', EntityType::class, [
                 'class' => Entrepot::class, // Sélection des entrepôts
                 'choice_label' => 'nom',
                 'label' => 'Entrepôt',

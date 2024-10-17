@@ -6,7 +6,7 @@ use App\Repository\CasierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Entity\Entrepot;
 #[ORM\Entity(repositoryClass: CasierRepository::class)]
 class Casier
 {
@@ -172,13 +172,14 @@ class Casier
         return $affichage;
     }
 
-    public function getNbCasiers() : ?int
+    public function getnbCasiers(): ?int
     {
-        $total = 0;
-        foreach ($this->getEntrepotNbCasier() as $nbCasiers)
-        {
-            $total ++;
+        // Vérification que l'entrepôt est bien défini
+        if ($this->lEntrepot === null) {
+            return 0;
         }
-        return $total;
+        
+        // Récupération du nombre de casiers dans l'entrepôt
+        return $this->lEntrepot->getLesCasiers()->count();
     }
 }
