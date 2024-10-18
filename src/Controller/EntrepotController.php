@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EntrepotController extends AbstractController
 {
-    #[Route('/entrepot/new', name: 'entrepot_new')]
+    #[Route('/entrepot/creer', name: 'entrepot_new')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         // Créer une nouvelle instance d'Entrepot

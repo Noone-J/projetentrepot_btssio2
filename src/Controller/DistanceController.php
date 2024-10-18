@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DistanceController extends AbstractController
 {
-    #[Route('/distance/new', name: 'distance_new')]
+    #[Route('/distance/creer', name: 'distance_new')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $distance = new Distance();

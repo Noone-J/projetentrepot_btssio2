@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CasierController extends AbstractController
 {
-    #[Route('/casier/new', name: 'casier_new')]
+    #[Route('/casier/creer', name: 'casier_new')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         // Créer une nouvelle instance de Casier

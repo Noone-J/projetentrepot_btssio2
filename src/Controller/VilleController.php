@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VilleController extends AbstractController
 {
-    #[Route('/creer-ville', name: 'creer_ville')]
+    #[Route('/ville/creer', name: 'creer_ville')]
     public function creerVille(Request $request, EntityManagerInterface $em): Response
     {
         // 1. Créer une instance de l'entité Ville
