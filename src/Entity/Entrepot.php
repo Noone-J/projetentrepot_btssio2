@@ -168,6 +168,7 @@ class Entrepot
         }
     }
 
+    //pas le temps de voir d'ou vient le nbCasier
     public function incrementNbCasiers(int $nbCasiers): self
     {
         $this->nbCasiers += $nbCasiers;
@@ -178,5 +179,24 @@ class Entrepot
     {
         $this->nbCasiers -= $nbCasiers;
         return $this;
+    }
+
+    public function getMinDistanceEntrepot(Ville $ville): ?Entrepot
+    {
+        $minDistance = null;
+        $entrepotMin = null;
+
+        foreach ($this->lesDistances as $distance) {
+            if ($distance->getLaVille() === $ville) {
+                $kilometres = $distance->getKilometres();
+
+                if ($minDistance === null || $kilometres < $minDistance) {
+                    $minDistance = $kilometres;
+                    $entrepotMin = $this;
+                }
+            }
+        }
+
+        return $entrepotMin;
     }
 }

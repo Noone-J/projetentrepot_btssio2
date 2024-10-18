@@ -1,31 +1,43 @@
 <?php
-// src/Controller/ColisController.php
+
 namespace App\Controller;
 
 use App\Entity\Colis;
+use App\Entity\Entrepot;
+use App\Entity\Casier;
+use App\Entity\Compartiment;
+use App\Entity\Ville;
 use App\Form\ColisType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class ColisController extends AbstractController
 {
     #[Route('/colis/creer', name: 'creer_colis')]
-    public function creerColis(Request $request, EntityManagerInterface $em): Response
+    public function creerColis(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $ville = $this->getDoctrine()->getRepository(Ville::class)->find($villeId);
-
-        if (!$ville) {
-            throw $this->createNotFoundException('Ville non trouvée.');
-        }
-
         // Récupérer toutes les distances (ou une instance spécifique)
-        $distanceEntity = new Distance(); // ou récupérer via EntityManager
+        $distanceEntity = new \App\Entity\Distance();
 
+
+        $entrepots = $entityManager->getRepository(Entrepot::class)->findAll();
         // Récupérer l'entrepôt avec la distance minimale pour la ville spécifiée
-        $entrepot = $distanceEntity->getMinDistanceEntrepot($ville);
+        $ville = $entityManager->getRepository(Ville::class)->findOneBy(['nom' => 'Lannion']); 
+        $entrepotMin = null;
+        $minDistance = null;
+        foreach ($entrepots as $entrepot) {
+            $distance = $entrepot->getMinDistanceEntrepot($ville);
+            if ($distance !== null) {
+                if ($minDistance === null || $distance < $minDistance) {
+                    $minDistance = $distance;
+                    $entrepotMin = $entrepot;
+                }
+            }
+        }
 
         // 1. Créer une instance de l'entité Colis
         $colis = new Colis();
@@ -38,12 +50,56 @@ class ColisController extends AbstractController
 
         // 4. Vérifier si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // 5. Si le formulaire est valide, enregistrer les données en base de données
-            $em->persist($colis);
-            $em->flush();
+            // Trouver un entrepôt disponible
+            $entrepotDisponible = null;
+            foreach ($entityManager->getRepository(Entrepot::class)->findAll() as $entrepot) {
+                if (!$entrepot->verifStatusEntrepot()) {
+                    $entrepotDisponible = $entrepot;
+                    break;
+                }
+            }
 
-            // Redirection vers le formulaire lui-même ou une autre page
-            return $this->redirectToRoute('creer_colis');
+            if ($entrepotDisponible) {
+                // Trouver un casier disponible dans cet entrepôt
+                $casierDisponible = null;
+                foreach ($entrepotDisponible->getLesCasiers() as $casier) {
+                    if (!$casier->verifStatusCasier()) {
+                        $casierDisponible = $casier;
+                        break;
+                    }
+                }
+
+                if ($casierDisponible) {
+                    // Trouver un compartiment disponible dans ce casier
+                    $compartimentDisponible = null;
+                    foreach ($casierDisponible->getLesCompartiments() as $compartiment) {
+                        if (!$compartiment->verifStatusCompartiment()) {
+                            $compartimentDisponible = $compartiment;
+                            break;
+                        }
+                    }
+
+                    if ($compartimentDisponible) {
+                        // Ajouter le colis au compartiment
+                        $colis->setLaVille($ville); // Associer la ville
+                        $compartimentDisponible->setLeColis($colis);
+                        $compartimentDisponible->setStatus(true); // Marquer le compartiment comme occupé
+
+                        // Enregistrer les modifications
+                        $entityManager->persist($colis);
+                        $entityManager->flush();
+
+                        $this->addFlash('success', 'Le colis a été créé et placé dans un compartiment.');
+                        return $this->redirectToRoute('liste_colis');
+                    } else {
+                        $this->addFlash('error', 'Désolé, aucun compartiment disponible trouvé dans ce casier.');
+                    }
+                } else {
+                    $this->addFlash('error', 'Désolé, aucun casier disponible trouvé dans cet entrepôt.');
+                }
+            } else {
+                $this->addFlash('error', 'Désolé, aucun entrepôt disponible trouvé.');
+            }
         }
 
         // 6. Afficher le formulaire dans la vue
@@ -52,10 +108,10 @@ class ColisController extends AbstractController
         ]);
     }
 
-    #[Route('/colis/creer', name: 'creer_colis')]
-    public function list(EntityManagerInterface $entityManager): Response
+    #[Route('/colis/liste', name: 'liste_colis')]
+    public function liste(EntityManagerInterface $entityManager): Response
     {
-        // Récupérer tous les casiers
+        // Récupérer tous les colis
         $colis = $entityManager->getRepository(Colis::class)->findAll();
 
         return $this->render('colis/list.html.twig', [
