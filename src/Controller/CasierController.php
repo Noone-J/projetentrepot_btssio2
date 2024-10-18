@@ -27,21 +27,28 @@ class CasierController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupérer le nombre de casiers à créer depuis le formulaire
             $entrepotNbCasier = $form->get('nbCasiers')->getData(); 
-
+           
             // Récupérer l'entrepôt sélectionné depuis le formulaire
             $lentrepot = $form->get('lentrepot')->getData();
 
+            if ($lentrepot instanceof Entrepot) {
+                // Récupérer l'ancien nombre de casiers dans l'entrepôt
+                $ancienNbCasier = $lentrepot->getEntrepotNbCasier();
+
+                // Incrémenter le nombre de casiers dans l'entrepôt avec le nouveau nombre
+                $lentrepot->setEntrepotNbCasier($ancienNbCasier + $entrepotNbCasier);
+            }
             // Créer les casiers
             for ($i = 0; $i < $entrepotNbCasier; $i++) {
                 $newCasier = new Casier();
                 $newCasier->setLEntrepot($lentrepot); // Associer l'entrepôt
-                $newCasier->setStatus(true); // Statut par défaut (ajustable)
-                $newCasier->setTaille(100);
+                $newCasier->setStatus(false); // Statut par défaut (ajustable)
+                $newCasier->setTaille(9);
 
                 // Créer 9 compartiments pour chaque casier
                 for ($j = 0; $j < 9; $j++) {
                     $compartiment = new Compartiment();
-                    $compartiment->setStatus(true); // Statut par défaut
+                    $compartiment->setStatus(false); // Statut par défaut
                     
                     // Associer le compartiment au casier
                     $newCasier->addLesCompartiment($compartiment);

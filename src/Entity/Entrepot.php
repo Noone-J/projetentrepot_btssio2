@@ -64,7 +64,7 @@ class Entrepot
         return $this->entrepotNbCasier;
     }
 
-    public function setEntrepotNbCasier(int $entrepotNbCasier): static
+    public function setEntrepotNbCasier(int $entrepotNbCasier): self
     {
         $this->entrepotNbCasier = $entrepotNbCasier;
 

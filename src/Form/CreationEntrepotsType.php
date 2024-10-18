@@ -18,11 +18,7 @@ class CreationEntrepotsType extends AbstractType
                 'label' => 'Nom de l\'entrepôt',
                 'required' => true,
             ])
-            ->add('nbCasiers', IntegerType::class, [
-                'label' => 'Nombre de Casiers',
-                'mapped' => false,
-                'required' => true,
-            ]);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
