@@ -15,6 +15,18 @@ class ColisController extends AbstractController
     #[Route('/colis/creer', name: 'creer_colis')]
     public function creerColis(Request $request, EntityManagerInterface $em): Response
     {
+        $ville = $this->getDoctrine()->getRepository(Ville::class)->find($villeId);
+
+        if (!$ville) {
+            throw $this->createNotFoundException('Ville non trouvée.');
+        }
+
+        // Récupérer toutes les distances (ou une instance spécifique)
+        $distanceEntity = new Distance(); // ou récupérer via EntityManager
+
+        // Récupérer l'entrepôt avec la distance minimale pour la ville spécifiée
+        $entrepot = $distanceEntity->getMinDistanceEntrepot($ville);
+
         // 1. Créer une instance de l'entité Colis
         $colis = new Colis();
 
