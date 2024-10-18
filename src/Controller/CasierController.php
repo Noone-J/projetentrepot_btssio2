@@ -41,7 +41,7 @@ class CasierController extends AbstractController
                 // Créer 9 compartiments pour chaque casier
                 for ($j = 0; $j < 9; $j++) {
                     $compartiment = new Compartiment();
-                    $compartiment->setStatus(false); // Statut par défaut
+                    $compartiment->setStatus(true); // Statut par défaut
                     
                     // Associer le compartiment au casier
                     $newCasier->addLesCompartiment($compartiment);
