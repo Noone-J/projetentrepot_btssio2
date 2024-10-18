@@ -31,9 +31,7 @@ class VilleController extends AbstractController
             $em->flush();
 
             // 6. Rediriger vers une autre page ou afficher un message de confirmation
-            return $this->redirectToRoute('resultat_ville', [
-                'id' => $ville->getId(),
-            ]);
+         
         }
 
         // 7. Afficher le formulaire dans la vue
