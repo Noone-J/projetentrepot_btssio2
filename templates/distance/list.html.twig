@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des distances{% endblock %}
+
+{% block body %}
+    <h1>Liste des distances</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ville</th>
+                <th>Entrepôt</th>
+                <th>Distance (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for distance in distances %}
+                <tr>
+                    <td>{{ distance.id }}</td>
+                    <td>{{ distance.laville.nom }}</td>
+                    <td>{{ distance.lentrepot.nom }}</td>
+                    <td>{{ distance.kilometres }}</td>  
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune distance trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('distance_new') }}">Ajouter une nouvelle distance</a>
+{% endblock %}

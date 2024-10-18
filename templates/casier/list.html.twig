@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des casiers{% endblock %}
+
+{% block body %}
+    <h1>Liste des casiers</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Entrepôt</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for casier in casiers %}
+                <tr>
+                    <td>{{ casier.lentrepot.nom }}</td>
+                    <td>{{ casier.id }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun casier trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('casier_new') }}">Ajouter un nouveau casier</a>
+{% endblock %}

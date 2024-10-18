@@ -112,4 +112,30 @@ class Ville
 
         return $this;
     }
+
+    public function getMinDistanceEntrepot(Ville $ville): ?Entrepot
+    {
+        
+        if ($ville === $this->getLaVille()) {
+            return null;
+        }
+
+        $minDistance = null;
+        $entrepotMin = null;
+
+        foreach ($this->lesDistances as $distance) {
+            // Vérifiez si la distance est associée à la ville spécifiée
+            if ($distance->getLaVille() === $ville) {
+                $kilometres = $distance->getKilometres();
+
+                // Vérifier si la distance actuelle est la plus petite
+                if ($minDistance === null || $kilometres < $minDistance) {
+                    $minDistance = $kilometres;
+                    $entrepotMin = $distance->getLEntrepot(); // Obtenez l'entrepôt associé à cette distance
+                }
+            }
+        }
+
+        return $entrepotMin; // Retournez l'entrepôt avec la distance minimale
+    }
 }

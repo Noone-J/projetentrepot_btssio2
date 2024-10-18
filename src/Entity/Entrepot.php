@@ -19,7 +19,7 @@ class Entrepot
     private ?string $nom = null;
 
     #[ORM\Column]
-    private ?int $entrepotNbCasier = null;
+    private ?int $entrepotNbCasier = 0;
 
     #[ORM\Column]
     private ?bool $status = false;
@@ -64,7 +64,7 @@ class Entrepot
         return $this->entrepotNbCasier;
     }
 
-    public function setEntrepotNbCasier(int $entrepotNbCasier): static
+    public function setEntrepotNbCasier(int $entrepotNbCasier): self
     {
         $this->entrepotNbCasier = $entrepotNbCasier;
 
@@ -158,5 +158,25 @@ class Entrepot
         else{
             return false;
         }
+    }
+
+    public function modifierStatusEntrepot(): void
+    {
+        if($this->verifStatusEntrepot()===true)
+        {
+            $this->status=true;
+        }
+    }
+
+    public function incrementNbCasiers(int $nbCasiers): self
+    {
+        $this->nbCasiers += $nbCasiers;
+        return $this;
+    }
+
+    public function decrementNbCasiers(int $nbCasiers): self
+    {
+        $this->nbCasiers -= $nbCasiers;
+        return $this;
     }
 }

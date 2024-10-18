@@ -62,4 +62,7 @@ class Distance
 
         return $this;
     }
+
+   
+    
 }
