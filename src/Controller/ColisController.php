@@ -39,4 +39,15 @@ class ColisController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/colis/creer', name: 'creer_colis')]
+    public function list(EntityManagerInterface $entityManager): Response
+    {
+        // Récupérer tous les casiers
+        $colis = $entityManager->getRepository(Colis::class)->findAll();
+
+        return $this->render('colis/list.html.twig', [
+            'colis' => $colis,
+        ]);
+    }
 }

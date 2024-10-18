@@ -112,4 +112,20 @@ class Ville
 
         return $this;
     }
+
+    public function kmPlusBas() {
+        $affichage = '';
+        foreach ($this->compartiments as $i => $compartiment) {
+            if (!in_array($compartiment, $this->colis)) {
+                $affichage .= '- ';
+            } else {
+                $affichage .= $compartiment . ' ';
+            }
+            
+            if (($i + 1) % 3 === 0) {
+                $affichage .= "\n";
+            }
+        }
+        return $affichage;
+    }
 }
