@@ -17,36 +17,47 @@ class CasierController extends AbstractController
     #[Route('/casier/new', name: 'casier_new')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Créer une nouvelle instance de Casier
         $casier = new Casier();
+
+        // Créer le formulaire
         $form = $this->createForm(CreationCasierType::class, $casier);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupère le nombre de casiers à créer depuis le formulaire (non mappé)
+            // Récupérer le nombre de casiers à créer depuis le formulaire
             $entrepotNbCasier = $form->get('nbCasiers')->getData(); 
-            
-            // Récupère l'entrepôt sélectionné depuis le formulaire
+
+            // Récupérer l'entrepôt sélectionné depuis le formulaire
             $lentrepot = $form->get('lentrepot')->getData();
 
-            // Crée le nombre de casiers défini dans le formulaire
+            // Créer les casiers
             for ($i = 0; $i < $entrepotNbCasier; $i++) {
                 $newCasier = new Casier();
                 $newCasier->setLEntrepot($lentrepot); // Associer l'entrepôt
-                $newCasier->setStatus(true); // Set other attributes as needed
-                
-                // Crée 9 compartiments pour chaque casier
+                $newCasier->setStatus(true); // Statut par défaut (ajustable)
+                $newCasier->setTaille(100);
+
+                // Créer 9 compartiments pour chaque casier
                 for ($j = 0; $j < 9; $j++) {
                     $compartiment = new Compartiment();
-                    $compartiment->setStatus(false); // Status par défaut
-                    $newCasier->addLesCompartiment($compartiment); // Ajout du compartiment
+                    $compartiment->setStatus(false); // Statut par défaut
+                    
+                    // Associer le compartiment au casier
+                    $newCasier->addLesCompartiment($compartiment);
+
+                    // Persister le compartiment
+                    $entityManager->persist($compartiment);
                 }
 
+                // Persister le nouveau casier après avoir persisté les compartiments
                 $entityManager->persist($newCasier);
             }
 
+            // Sauvegarder les casiers créés et l'entrepôt mis à jour dans la base de données
             $entityManager->flush();
 
-            return $this->redirectToRoute('casier_list'); // Redirection vers la liste des casiers
+            return $this->redirectToRoute('casier_list');
         }
 
         return $this->render('casier/new.html.twig', [
@@ -54,12 +65,10 @@ class CasierController extends AbstractController
         ]);
     }
 
-    
-
-
     #[Route('/casiers', name: 'casier_list')]
     public function list(EntityManagerInterface $entityManager): Response
     {
+        // Récupérer tous les casiers
         $casiers = $entityManager->getRepository(Casier::class)->findAll();
 
         return $this->render('casier/list.html.twig', [

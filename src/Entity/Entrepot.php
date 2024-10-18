@@ -167,4 +167,16 @@ class Entrepot
             $this->status=true;
         }
     }
+
+    public function incrementNbCasiers(int $nbCasiers): self
+    {
+        $this->nbCasiers += $nbCasiers;
+        return $this;
+    }
+
+    public function decrementNbCasiers(int $nbCasiers): self
+    {
+        $this->nbCasiers -= $nbCasiers;
+        return $this;
+    }
 }

@@ -17,6 +17,11 @@ class CreationEntrepotsType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Nom de l\'entrepôt',
                 'required' => true,
+            ])
+            ->add('nbCasiers', IntegerType::class, [
+                'label' => 'Nombre de Casiers',
+                'mapped' => false,
+                'required' => true,
             ]);
     }
 

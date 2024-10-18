@@ -88,16 +88,13 @@ class Casier
         return $this->lesCompartiments;
     }
 
-    public function addLesCompartiment(Compartiment $lesCompartiment): static
+ 
+    public function addLesCompartiment(Compartiment $compartiment): self
     {
-        if (!$this->lesCompartiments->contains($lesCompartiment)) {
-            $this->lesCompartiments->add($lesCompartiment);
-            $lesCompartiment->setLeCasier($this);
-        }
-
+        $this->lesCompartiments[] = $compartiment;
+        $compartiment->setLeCasier($this); // Associer le compartiment au casier
         return $this;
     }
-
     public function removeLesCompartiment(Compartiment $lesCompartiment): static
     {
         if ($this->lesCompartiments->removeElement($lesCompartiment)) {
@@ -181,5 +178,22 @@ class Casier
         
         // Récupération du nombre de casiers dans l'entrepôt
         return $this->lEntrepot->getLesCasiers()->count();
+    }
+
+    public function setnbLEntrepot(?Entrepot $lEntrepot): self
+    {
+        // Si l'entrepôt est changé, décrémenter le nombre de casiers de l'ancien entrepôt
+        if ($this->lEntrepot !== null) {
+            $this->lEntrepot->decrementNbCasiers(1);
+        }
+
+        $this->lEntrepot = $lEntrepot;
+
+        // Incrémenter le nombre de casiers de l'entrepôt associé
+        if ($lEntrepot !== null) {
+            $lEntrepot->incrementNbCasiers(1);
+        }
+
+        return $this;
     }
 }
